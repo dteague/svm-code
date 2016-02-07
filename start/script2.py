@@ -30,34 +30,42 @@ filetext += "is_hydrogen	=.false.\n"
 filetext += "I_0\t:"
 
 for i in range(i_b,i_end+1):
-	for j in range(j_max):
-		input = open('input.inp','w')
-		input.write(filetext)
-		input.write(str(front[j])+"d"+str(i))
-		input.close()
-		os.system('./thecode')
-		gs_file = str(front[j]) + 'd' + str(i) + '.dat'
-		os.system('mv groundstate.dat ' + gs_file)
-		
-		os.system('tail -n 250 ' + gs_file + ' > ' + str(x) + '.dat')
-		
-		x = x + 1
+    for j in range(j_max):
+        input = open('input.inp','w')
+        input.write(filetext)
+        input.write(str(front[j])+"d"+str(i))
+        input.close()
+        os.system('./thecode')
+        gs_file = str(front[j]) + 'd' + str(i) + '.dat'
+        os.system('mv groundstate.dat ' + gs_file)
+            
+        os.system('tail -n 250 ' + gs_file + ' > ' + str(x) + '.dat')
+            
+        x = x + 1
 
 file_out = 'knee_f' + str(wavel)+ '_w' + str(width)
 out = open(file_out + ".dat", "w")
 
 for i in range(1,x):
     f = open(str(i)+".dat", "r")
+    x_avg = 251./2
+    x2_sum = 125*251*167
+    y_avg = 0.
+    xy = 0.
     tot = 0
+    x_val = 1
     for line in f:
-        tot += float(line)
-    tot = tot/250
+        y = float(line)
+        xy += x_val * y
+        y_avg += y
+        x_val += 1
+    y_avg = y_avg/250
+    
+    tot = (y_avg*x2_sum - x_avg*xy)/(x2_sum - 250*x_avg**2)
     out.write(str(tot) + "\n")
 
 os.system('mkdir ' + file_out)
 os.system('mv ' + file_out + '.dat ./' + file_out)
 
-i=0
-while i < 10:
+for i in range(1,10):
 	os.system('mv ' + str(i) + '* ./' + file_out)
-	i+=1

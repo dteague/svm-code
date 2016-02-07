@@ -1,6 +1,6 @@
-width		:30
+width		: 30
 lambda		:100d-9
-#_timesteps	:0
+#_timesteps	:3000
 dt		:0.05
 Z_charge	:2
 T_of_output	:500
@@ -11,4 +11,3 @@ disp_wavefunc	:.true.
 disp_density	:.true.
 is_helium	:.true.
 is_hydrogen	=.false.
-I_0	:56d18

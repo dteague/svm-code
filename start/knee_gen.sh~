@@ -1,0 +1,41 @@
+#!/bin/bash
+
+width="30"
+lambda="100"
+
+start=18
+stop=18
+intensity="10 18 30 56"
+
+filetext="width\t\t: $width\n"
+filetext+="lambda\t\t:${lambda}d-9\n"
+filetext+="#_timesteps\t:3000\n"
+filetext+="dt\t\t:0.05\n"
+filetext+="Z_charge\t:2\n"
+filetext+="T_of_output\t:500\n"
+filetext+="half_lat_num\t:100\n"
+filetext+="lat_width\t:.02\n"
+filetext+="taylor\t\t:.false.\n"
+filetext+="disp_wavefunc\t:.true.\n"
+filetext+="disp_density\t:.true.\n"
+filetext+="is_helium\t:.true.\n"
+filetext+="is_hydrogen\t=.false.\n"
+
+i_add="I_0\t\t:"
+
+echo -e $filetext > input.inp
+
+i=$start
+
+while [ $i -le $stop ]
+do
+
+    for j in $intensity
+    do
+	dir="${j}d${i}"
+	mkdir $dir
+	cat input.inp > ./$dir/input.inp
+	echo $i_add+$dir >> ./$dir/input.inp
+    done
+    i=$[$i+1]
+done
