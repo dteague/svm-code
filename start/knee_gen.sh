@@ -1,5 +1,16 @@
 #!/bin/bash
 
+if [ ! -f basis.inp ]
+then
+    echo "basis.inp doesn't exist, run opt2.py"
+    exit
+fi
+
+if [ ! -f basis.dat ]
+then
+   ./basis_o_w
+fi
+
 width="30"
 lambda="100"
 
